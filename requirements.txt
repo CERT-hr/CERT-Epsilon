@@ -1,0 +1,16 @@
+wheel
+flask
+python-dotenv
+pytest-dotenv
+Flask-Babel
+uwsgi
+defusedxml
+psycopg2
+flask-paginate
+requests
+flask_scss
+Flask-WTF
+email_validator
+coverage
+pytest-cov
+flaskr

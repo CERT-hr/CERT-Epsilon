@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}{{_('unsubscribe')}}{% endblock %}
+{% block head %}<h3 class="centered-title padding20">{{_('remove subscriptions')}}</h3>{% endblock %}
+{% block content %}
+{% include 'shared/form_message.html' %}
+    {% if subscriptions|length == 0%}
+        {{ "Trenutno nemate aktivnih pretplata, pa vas molimo da se prije prijavite na liste" }}
+    {% else %}
+            <form action="/unsubscriptions" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token()}}"/>
+<div class="row fix-width">
+  <div class="col-2"></div>
+  <div class="col-8 carnet-blue padding20 round-corners">
+              <div
+            class="row infobox_filter"
+            data-toggle="tooltip"
+            data-placement="bottom"
+            title="">
+            [ℹ]: {{_('unsubscribe info message')}}
+            </div>
+    <div class="row">
+      <div class="col-2"></div>
+      <div class="col8 carnet-dark-blue padding20 round-corners width60">
+        <div class="row centered-title padding10">
+          <h5>{{_('chosen subscriptions for email ')}} {{ email }}</h5>
+        </div>
+        <div id="unsub-subs-area" class="row scrollable">
+          <div class="col-12">
+              <div id="unsub-button-area" class="col-4">
+                      <input id="remove-all-button" name="remove-all" type="checkbox" value="">
+                <label for="remove-all">{{_('remove all') }}</label>
+            </div>
+          {% set count = [0] %}
+            {%  for sub in subscriptions %}
+                  <div class="col-4">
+                        <div class="sub-list-wrapper">
+                            <input id="subscription_list-{{ count[0]}}-sub_item" name="subscription_list-{{ count[0] }}-sub_item" type="checkbox" value="{{ sub["id"] }}">
+                            <label for="subscription_list-{{ count[0] }}-sub_item">{{ sub["product"] }}</label>
+                        </div>
+                        {% if count.append(count.pop() + 1) %}{% endif %}
+                 </div>
+            {% endfor %}
+
+          </div>
+      </div>
+      <div class="col-2"></div>
+    </div>
+  </div>
+  <div class="col-2"></div>
+</div>
+<div class="row padding10 fix-width center-div-items">
+    {{ form.submit(class_="btn btn-danger remove-subscription") }}
+{#  <button type="button" class="btn btn-secondary">{{_('confirm')}}</button>#}
+</div>
+            </form>
+    {% endif %}
+{% endblock %}

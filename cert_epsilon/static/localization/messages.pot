@@ -1,0 +1,358 @@
+# Translations template for PROJECT.
+# Copyright (C) 2020 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2020-10-30 12:32+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.8.0\n"
+
+#: cert_epsilon/lib/db_handler.py:694 cert_epsilon/lib/db_handler.py:695
+#: cert_epsilon/templates/index.html:61
+msgid "Not set"
+msgstr ""
+
+#: cert_epsilon/templates/404.html:2
+msgid "NOT FOUND"
+msgstr ""
+
+#: cert_epsilon/templates/about.html:2
+#: cert_epsilon/templates/shared/header.html:17
+msgid "about"
+msgstr ""
+
+#: cert_epsilon/templates/about.html:4
+msgid "about text"
+msgstr ""
+
+#: cert_epsilon/templates/capec.html:8 cert_epsilon/templates/cwe-id.html:18
+msgid "name"
+msgstr ""
+
+#: cert_epsilon/templates/capec.html:16 cert_epsilon/templates/index.html:38
+#: cert_epsilon/templates/index.html:86
+msgid "summary"
+msgstr ""
+
+#: cert_epsilon/templates/capec.html:24
+msgid "prerequisites"
+msgstr ""
+
+#: cert_epsilon/templates/capec.html:32
+msgid "solutions"
+msgstr ""
+
+#: cert_epsilon/templates/cve.html:66
+msgid "Summary"
+msgstr ""
+
+#: cert_epsilon/templates/cve.html:70
+msgid "References"
+msgstr ""
+
+#: cert_epsilon/templates/cve.html:85
+msgid "Base"
+msgstr ""
+
+#: cert_epsilon/templates/cve.html:86 cert_epsilon/templates/cve.html:105
+msgid "Impact"
+msgstr ""
+
+#: cert_epsilon/templates/cve.html:87
+msgid "Exploitability"
+msgstr ""
+
+#: cert_epsilon/templates/cve.html:92
+msgid "Access"
+msgstr ""
+
+#: cert_epsilon/templates/cve.html:95
+msgid "Vector"
+msgstr ""
+
+#: cert_epsilon/templates/cve.html:95
+msgid "Complexity"
+msgstr ""
+
+#: cert_epsilon/templates/cve.html:95
+msgid "Authentication"
+msgstr ""
+
+#: cert_epsilon/templates/cve.html:108
+msgid "Confidentiality"
+msgstr ""
+
+#: cert_epsilon/templates/cve.html:108
+msgid "Integrity"
+msgstr ""
+
+#: cert_epsilon/templates/cve.html:108
+msgid "Availability"
+msgstr ""
+
+#: cert_epsilon/templates/cve.html:118
+msgid "cvss-vector"
+msgstr ""
+
+#: cert_epsilon/templates/cve.html:122
+msgid "Last major update"
+msgstr ""
+
+#: cert_epsilon/templates/cve.html:126
+msgid "Published"
+msgstr ""
+
+#: cert_epsilon/templates/cwe-id.html:28
+msgid "This CWE doesn't have CAPECes"
+msgstr ""
+
+#: cert_epsilon/templates/cwe.html:2
+#: cert_epsilon/templates/shared/header.html:14
+msgid "cwe"
+msgstr ""
+
+#: cert_epsilon/templates/cwe.html:9
+msgid "search cwes"
+msgstr ""
+
+#: cert_epsilon/templates/cwe.html:12 cert_epsilon/templates/filter.html:128
+#: cert_epsilon/templates/index.html:15 cert_epsilon/templates/vendors.html:68
+msgid "search"
+msgstr ""
+
+#: cert_epsilon/templates/cwe.html:27
+msgid "description"
+msgstr ""
+
+#: cert_epsilon/templates/filter.html:5
+msgid "filter"
+msgstr ""
+
+#: cert_epsilon/templates/filter.html:14
+msgid ""
+"Postoji četiri različita načina filtriranja i prema određivanju "
+"vrijednosti pojedinog filtera prikazuju se rezultati. Pojedini filter "
+"može se definirati ili može ostati neodređen. Na primjer ako odaberete "
+"vrijeme objave i vrijednost CVSS-a dobit ćete popis svih CVE-ova koji "
+"unutar odabranog vremenskog razdoblja imaju odabranu vrijednost CVSS-a. "
+"Ako dodatno odredite filter operacijskog sustava kao na primjer Debian i "
+"Windows 7 dobit ćete popis CVE-ova u odabranom vremenskom razdoblju, "
+"odabrane vrijednosti CVSS-a koje utječu na OS Debian i Windows 7."
+msgstr ""
+
+#: cert_epsilon/templates/filter.html:15
+msgid "Uputa za koristenje filtera"
+msgstr ""
+
+#: cert_epsilon/templates/filter.html:22
+msgid "time of publishing"
+msgstr ""
+
+#: cert_epsilon/templates/filter.html:25
+msgid "time"
+msgstr ""
+
+#: cert_epsilon/templates/filter.html:28
+msgid "select an option"
+msgstr ""
+
+#: cert_epsilon/templates/filter.html:29
+msgid "from"
+msgstr ""
+
+#: cert_epsilon/templates/filter.html:30
+msgid "until"
+msgstr ""
+
+#: cert_epsilon/templates/filter.html:31
+msgid "between"
+msgstr ""
+
+#: cert_epsilon/templates/filter.html:57
+msgid "all"
+msgstr ""
+
+#: cert_epsilon/templates/filter.html:58
+msgid "above"
+msgstr ""
+
+#: cert_epsilon/templates/filter.html:59
+msgid "equals"
+msgstr ""
+
+#: cert_epsilon/templates/filter.html:60
+msgid "below"
+msgstr ""
+
+#: cert_epsilon/templates/filter.html:75
+msgid "operation system"
+msgstr ""
+
+#: cert_epsilon/templates/filter.html:77
+msgid "os"
+msgstr ""
+
+#: cert_epsilon/templates/filter.html:110
+#: cert_epsilon/templates/vendors.html:15
+#: cert_epsilon/templates/vendors.html:38
+#: cert_epsilon/templates/vendors.html:81
+msgid "vendor"
+msgstr ""
+
+#: cert_epsilon/templates/filter.html:117
+msgid "add"
+msgstr ""
+
+#: cert_epsilon/templates/index.html:2 cert_epsilon/templates/index.html:25
+#: cert_epsilon/templates/shared/header.html:8
+msgid "all entries"
+msgstr ""
+
+#: cert_epsilon/templates/index.html:12
+msgid "search cves"
+msgstr ""
+
+#: cert_epsilon/templates/index.html:28
+msgid "top 10"
+msgstr ""
+
+#: cert_epsilon/templates/index.html:39 cert_epsilon/templates/index.html:87
+msgid "last update"
+msgstr ""
+
+#: cert_epsilon/templates/index.html:40 cert_epsilon/templates/index.html:88
+msgid "published"
+msgstr ""
+
+#: cert_epsilon/templates/index.html:125
+#: cert_epsilon/templates/vendors.html:106
+msgid "page"
+msgstr ""
+
+#: cert_epsilon/templates/index.html:138
+#: cert_epsilon/templates/vendors.html:119
+msgid "records per page"
+msgstr ""
+
+#: cert_epsilon/templates/shared/header.html:20
+#: cert_epsilon/templates/subscriptions.html:2
+msgid "subscriptions"
+msgstr ""
+
+#: cert_epsilon/templates/subscriptions.html:20
+msgid "Detail instruction for options of subscription form"
+msgstr ""
+
+#: cert_epsilon/templates/subscriptions.html:21
+msgid "Info text for instruction of subscription form"
+msgstr ""
+
+#: cert_epsilon/templates/subscriptions.html:27
+msgid "operating systems"
+msgstr ""
+
+#: cert_epsilon/templates/subscriptions.html:30
+#: cert_epsilon/templates/subscriptions.html:90
+#: cert_epsilon/templates/subscriptions.html:221
+msgid "keywords"
+msgstr ""
+
+#: cert_epsilon/templates/subscriptions.html:33
+msgid "advanced"
+msgstr ""
+
+#: cert_epsilon/templates/subscriptions.html:132
+msgid "chosen subscriptions"
+msgstr ""
+
+#: cert_epsilon/templates/subscriptions.html:135
+msgid "no_subscriptions"
+msgstr ""
+
+#: cert_epsilon/templates/subscriptions.html:151
+#: cert_epsilon/templates/unsubscriptions.html:31
+msgid "remove all"
+msgstr ""
+
+#: cert_epsilon/templates/subscriptions.html:172
+msgid "subscribe"
+msgstr ""
+
+#: cert_epsilon/templates/shared/footer.html:11
+#: cert_epsilon/templates/terms_of_use.html:2
+msgid "terms of use"
+msgstr ""
+
+#: cert_epsilon/templates/terms_of_use.html:4
+msgid "terms of use text"
+msgstr ""
+
+#: cert_epsilon/templates/unsubscriptions.html:2
+msgid "unsubscribe"
+msgstr ""
+
+#: cert_epsilon/templates/unsubscriptions.html:3
+msgid "remove subscriptions"
+msgstr ""
+
+#: cert_epsilon/templates/unsubscriptions.html:19
+msgid "unsubscribe info message"
+msgstr ""
+
+#: cert_epsilon/templates/unsubscriptions.html:25
+msgid "chosen subscriptions for email "
+msgstr ""
+
+#: cert_epsilon/templates/shared/header.html:11
+#: cert_epsilon/templates/vendors.html:2
+msgid "browse"
+msgstr ""
+
+#: cert_epsilon/templates/vendors.html:10
+msgid "top 10 of all time"
+msgstr ""
+
+#: cert_epsilon/templates/vendors.html:16
+#: cert_epsilon/templates/vendors.html:39
+#: cert_epsilon/templates/vendors.html:82
+msgid "number of vulnerabilities"
+msgstr ""
+
+#: cert_epsilon/templates/vendors.html:33
+msgid "top 10 this week"
+msgstr ""
+
+#: cert_epsilon/templates/vendors.html:54
+msgid "search vendors"
+msgstr ""
+
+#: cert_epsilon/templates/vendors.html:144
+msgid "Didnt find any vendors"
+msgstr ""
+
+#: cert_epsilon/templates/shared/footer.html:14
+msgid "privacy policy"
+msgstr ""
+
+#: cert_epsilon/templates/shared/header.html:27
+msgid "language"
+msgstr ""
+
+#: cert_epsilon/views/main_views.py:138
+msgid "CWE with id '"
+msgstr ""
+
+#: cert_epsilon/views/main_views.py:138
+msgid "' not found"
+msgstr ""
+

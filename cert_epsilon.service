@@ -1,0 +1,14 @@
+[Unit]
+Description=uWSGI instance to serve cert epsilon
+After=network.target
+
+[Service]
+User=epsilon
+Group=www-data
+
+WorkingDirectory=/home/epsilon/cert_epsilon
+Environment="PATH=/home/epsilon/cert_epsilon/env/bin"
+ExecStart=/home/epsilon/cert_epsilon/env/bin/uwsgi --ini cert_epsilon.ini
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,132 @@
+<div class="col-4 dropdown-column">
+  <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+      aria-haspopup="true" aria-expanded="false">
+      {{_('filter')}}
+    </button>
+    <div id="filters" class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+      <form id="filter_form" action="/" method="GET">
+        <div class="container-fluid">
+        <button type="button" class="row infobox_filter"
+            data-toggle="popover"
+            data-content="{{ _('Postoji četiri različita načina filtriranja i prema određivanju vrijednosti pojedinog filtera prikazuju se rezultati. Pojedini filter može se definirati ili može ostati neodređen. Na primjer ako odaberete vrijeme objave i vrijednost CVSS-a dobit ćete popis svih CVE-ova koji unutar odabranog vremenskog razdoblja imaju odabranu vrijednost CVSS-a. Ako dodatno odredite filter operacijskog sustava kao na primjer Debian i Windows 7 dobit ćete popis CVE-ova u odabranom vremenskom razdoblju, odabrane vrijednosti CVSS-a koje utječu na OS Debian i Windows 7.') }}">
+            [ℹ]: {{  _('Uputa za koristenje filtera') }}
+        </button>
+          <div class="row">
+            <div class="col-3 border-right">
+              <div class="row">
+                <div class="card border-light">
+                  <div class="card-body">
+                    <h5 class="card-title">{{_('time of publishing')}}</h5>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">{{_('time')}}</label>
+                      </div>
+                      <select onchange="handle_date_pick_change(this)" name="date_mode" class="custom-select" id="inputGroupSelect01">
+                        <option disabled selected>-- {{_('select an option')}} --</option>
+                        <option value="from">{{_('from')}}</option>
+                        <option value="until">{{_('until')}}</option>
+                        <option value="between">{{_('between')}}</option>
+                      </select>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-10">
+                        <input name="date_start" class="form-control" type="date" id="example-date-input">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-10">
+                        <input name="date_end" class="form-control" type="date" id="example-date-input2">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-3 border-right">
+              <div class="card border-light" style="width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title">CVSS</h5>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text" for="inputGroupSelect02">CVSS</label>
+                    </div>
+                    <select name="cvss_mode" class="custom-select" id="inpustGroupSelect02">
+                      <option value="" selected>{{_('all')}}</option>
+                      <option value="more_than">{{_('above')}}</option>
+                      <option value="equal">{{_('equals')}}</option>
+                      <option value="less_than">{{_('below')}}</option>
+                    </select>
+                  </div>
+                  <div class="form-group row">
+                    <label for="example-number-input" class="col-2 col-form-label"></label>
+                    <div class="col-10">
+                      <input name="cvss" class="form-control" type="number" id="example-number-input">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-3 border-right">
+              <div class="card border-light">
+                <div class="card-body">
+                  <h5 class="card-title">{{_('operation system')}}</h5>
+                  <div class="form-group row">
+                    <label class="col-sm-3">{{_('os')}}</label>
+                    <div class="col-sm-9">
+                      {% for k,os_list in oses.items() %}
+                        <div class="form-check" onmouseover="this.style.cursor='pointer';">
+                          <label class="form-check-label selected_value" onmouseover="add_effect(this)" onmouseleave="remove_effect(this)">
+                            <input id="{{k}}" onclick="os_click(this)" value="{{k}}" class="form-check-input" type="checkbox">{{k}}
+                          </label>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-2">
+
+                    </div>
+                    <div id="os-picker" class="col-sm-10">
+                      {% for k,os_list in oses.items() %}
+                        {% for os in os_list %}
+                          <div class="form-check">
+                            <label class="form-check-label selected_value" onmouseover="add_effect(this)" onmouseleave="remove_effect(this)">
+                              <input name="os" value="{{os}}" class="form-check-input {{k}}" type="checkbox">{{os}}
+                            </label>
+                          </div>
+                        {% endfor %}
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="card border-light">
+                <div class="card-body">
+                  <h5 class="card-title">{{_('vendor')}}</h5>
+                  <div class="input-group mb-3">
+                    <div class="ui-widget">
+                      <input id="vendor_autocomplete" type="text" class="form-control" placeholder="" aria-label=""
+                        aria-describedby="button-addon2">
+                    </div>
+                    <div class="input-group-append">
+                      <button onclick="add_vendor()" class="btn btn-outline-secondary" type="button" id="button-addon2">{{_('add')}}</button>
+                    </div>
+                  </div>
+                  <div id="selected_values_wrapper">
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="advanced-button-container" class="row">
+            <button type="button" onclick="custom_submit()" class="btn btn-primary">{{_('search')}}</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

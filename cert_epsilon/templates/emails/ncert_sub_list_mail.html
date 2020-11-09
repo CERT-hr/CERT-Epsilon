@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>NCERT - lista preplata</title>
+    
+  </head>
+  <body>
+
+{% block body %}
+Poštovani, <br>
+
+
+    {%  if data.list|length == 0 %}
+        <p>Trenutno niste preplaceni niti na jednu listu. U koliko želite molimo vas da se preplatite</p>
+    {% else %}
+        <p>Sigurnosna upozorenja i preporuke grupirana su po platformama, a popis Vaših odabira možete pregledati u nastavku:</p>
+
+-----<br>
+        {% for sub in data.list %}
+
+Proizvođač: {{sub.vendor}},<br>
+Proizvod: {{sub.product}},<br>
+CVSS: {{sub.cvss}}<br>
+-----<br>
+
+{% endfor %}
+    {% endif %}
+ {% endblock %}
+<br>
+Lijep pozdrav,<br>
+-- <br>
+HR-CERT - Odjel za Nacionalni CERT<br>
+Hrvatska akademska i istraživačka mreža - CARNET<br>
+Josipa Marohnića 5, 10000 Zagreb<br>
+tel: +385 1 6661 650, fax: +385 1 6661 767<br>
+www.cert.hr<br>
+
+  </body>
+</html>
