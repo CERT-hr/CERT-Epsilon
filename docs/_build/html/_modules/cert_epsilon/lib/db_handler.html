@@ -1,0 +1,415 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>cert_epsilon.lib.db_handler &#8212; CERT Epsilon  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for cert_epsilon.lib.db_handler</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">psycopg2</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">environ</span> <span class="k">as</span> <span class="n">env</span>
+<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span><span class="p">,</span> <span class="n">find_dotenv</span>
+
+
+<div class="viewcode-block" id="db_handler"><a class="viewcode-back" href="../../../source/cert_epsilon.lib.html#cert_epsilon.lib.db_handler.db_handler">[docs]</a><span class="k">class</span> <span class="nc">db_handler</span><span class="p">:</span>
+
+    <span class="c1"># decorator that returns cursor, and closes connection after function</span>
+<div class="viewcode-block" id="db_handler.handle_connection"><a class="viewcode-back" href="../../../source/cert_epsilon.lib.html#cert_epsilon.lib.db_handler.db_handler.handle_connection">[docs]</a>    <span class="k">def</span> <span class="nf">handle_connection</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Used as a decorator, handles connection to the database, every function decorated with this </span>
+<span class="sd">        decorator needs to have cursor=None as parameter, and can use it as an active connection to the</span>
+<span class="sd">        database</span>
+<span class="sd">        </span>
+<span class="sd">        :return: If any exception is thrown while handling the database connection, commiting to the database</span>
+<span class="sd">            or closing connection, handle_connection will return False</span>
+
+<span class="sd">        :Author: Karlo Kegljevic &lt;kkegljev@carnet.hr&gt;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">ps_connection</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+                    <span class="n">user</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;POSTGRE_USER&quot;</span><span class="p">),</span> 
+                    <span class="n">password</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;POSTGRE_PASSWORD&quot;</span><span class="p">),</span> 
+                    <span class="n">host</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;POSTGRE_IP&quot;</span><span class="p">),</span> 
+                    <span class="n">port</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                    <span class="n">database</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;POSTGRE_DATABASE&quot;</span><span class="p">))</span>
+                <span class="n">cursor</span> <span class="o">=</span> <span class="n">ps_connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+            <span class="k">except</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">DatabaseError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error connecting to database!&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">return</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Unknown exception while connecting to the database!&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Info:&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;USER: &quot;</span> <span class="o">+</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;POSTGRE_USER&quot;</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PASSWORD: &quot;</span> <span class="o">+</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;POSTGRE_PASSWORD&quot;</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;IP: &quot;</span> <span class="o">+</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;POSTGRE_IP&quot;</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DATABASE: &quot;</span> <span class="o">+</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;POSTGRE_DATABASE&quot;</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">return</span>
+
+            <span class="n">r</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">*</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">cursor</span><span class="o">=</span><span class="n">cursor</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">IntegrityError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Duplicate key!&quot;</span><span class="p">)</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">ps_connection</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+                <span class="k">return</span>
+            <span class="k">except</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">ProgrammingError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Exception raised for programming errors, e.g.  table not found or already &quot;</span><span class="o">+</span> 
+                <span class="s2">&quot;exists, syntax error in the SQL state-ment, wrong number of parameters specified..&quot;</span><span class="p">)</span>
+                <span class="n">ps_connection</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+                <span class="k">return</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Unknown exception while commiting to the database!&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Info:&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;USER: &quot;</span> <span class="o">+</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;POSTGRE_USER&quot;</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PASSWORD: &quot;</span> <span class="o">+</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;POSTGRE_PASSWORD&quot;</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;IP: &quot;</span> <span class="o">+</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;POSTGRE_IP&quot;</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DATABASE: &quot;</span> <span class="o">+</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;POSTGRE_DATABASE&quot;</span><span class="p">))</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="n">ps_connection</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+                <span class="k">return</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ps_connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">ps_connection</span><span class="p">:</span>
+                    <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                    <span class="n">ps_connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">r</span>
+        <span class="k">return</span> <span class="n">wrapper</span></div>
+    
+
+<div class="viewcode-block" id="db_handler.get_cve"><a class="viewcode-back" href="../../../source/cert_epsilon.lib.html#cert_epsilon.lib.db_handler.db_handler.get_cve">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="nd">@handle_connection</span>
+    <span class="k">def</span> <span class="nf">get_cve</span><span class="p">(</span><span class="n">cve_id</span><span class="p">,</span> <span class="n">cursor</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Fetches CAPEC from database</span>
+
+<span class="sd">        :param cve_id</span>
+<span class="sd">        :return: Dictionary with cve&#39;s attributes as keys</span>
+<span class="sd">        :rtype: dict </span>
+<span class="sd">        :Author: Karlo Kegljevic &lt;kkegljev@carnet.hr&gt;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">callproc</span><span class="p">(</span><span class="s1">&#39;get_cve&#39;</span><span class="p">,</span> 
+                <span class="p">[</span><span class="n">cve_id</span><span class="p">,</span> <span class="p">])</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;cve_id&quot;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="s2">&quot;cvss&quot;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                    <span class="s2">&quot;published_date&quot;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+                    <span class="s2">&quot;reference_links&quot;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span>
+                    <span class="s2">&quot;base_score&quot;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span>
+                    <span class="s2">&quot;exploitability_score&quot;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span>
+                    <span class="s2">&quot;impact_score&quot;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span>
+                    <span class="s2">&quot;severity&quot;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span>
+                    <span class="s2">&quot;cvss_access_vector&quot;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span>
+                    <span class="s2">&quot;cvss_vector_string&quot;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span>
+                    <span class="s2">&quot;cvss_access_complexity&quot;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">11</span><span class="p">],</span>
+                    <span class="s2">&quot;cvss_authentication&quot;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">12</span><span class="p">],</span>
+                    <span class="s2">&quot;cvss_confidentiality_impact&quot;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">13</span><span class="p">],</span>
+                    <span class="s2">&quot;cvss_integrity_impact&quot;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">14</span><span class="p">],</span>
+                    <span class="s2">&quot;cvss_availability_impact&quot;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">15</span><span class="p">],</span>
+                    <span class="s2">&quot;last_modified_date&quot;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">16</span><span class="p">]</span>
+                <span class="p">}</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">{}</span>
+        <span class="k">return</span> <span class="n">r</span></div>
+
+<div class="viewcode-block" id="db_handler.get_capec"><a class="viewcode-back" href="../../../source/cert_epsilon.lib.html#cert_epsilon.lib.db_handler.db_handler.get_capec">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="nd">@handle_connection</span>
+    <span class="k">def</span> <span class="nf">get_capec</span><span class="p">(</span><span class="n">capec_id</span><span class="p">,</span> <span class="n">cursor</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Fetches CAPEC from database</span>
+
+<span class="sd">        :param capec_id</span>
+<span class="sd">        :return: Dictionary with keys capec_id, name, description, prerequisites and mitigations</span>
+<span class="sd">        :rtype: dict </span>
+<span class="sd">        :Author: Karlo Kegljevic &lt;kkegljev@carnet.hr&gt;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">callproc</span><span class="p">(</span><span class="s1">&#39;get_capec&#39;</span><span class="p">,</span> 
+                <span class="p">[</span><span class="n">capec_id</span><span class="p">,</span> <span class="p">])</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;capec_id&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                    <span class="s1">&#39;prerequisites&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+                    <span class="s1">&#39;mitigations&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;|&#39;</span> <span class="ow">in</span> <span class="n">r</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="k">else</span> <span class="n">r</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+                <span class="p">}</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">{}</span>
+        <span class="k">return</span> <span class="n">r</span></div>
+
+<div class="viewcode-block" id="db_handler.get_cwe"><a class="viewcode-back" href="../../../source/cert_epsilon.lib.html#cert_epsilon.lib.db_handler.db_handler.get_cwe">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="nd">@handle_connection</span>
+    <span class="k">def</span> <span class="nf">get_cwe</span><span class="p">(</span><span class="n">cwe_id</span><span class="p">,</span> <span class="n">cursor</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Fetches CWE from database</span>
+
+<span class="sd">        :param cwe_id </span>
+<span class="sd">        :return: Dictionary with keys cwe_id, name, description</span>
+<span class="sd">        :rtype: dict </span>
+<span class="sd">        :Author: Karlo Kegljevic &lt;kkegljev@carnet.hr&gt;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">callproc</span><span class="p">(</span><span class="s1">&#39;get_cwe&#39;</span><span class="p">,</span> 
+                <span class="p">[</span><span class="n">cwe_id</span><span class="p">,</span> <span class="p">])</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;cwe_id&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                <span class="p">}</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">{}</span>
+        <span class="k">return</span> <span class="n">r</span></div>
+
+<div class="viewcode-block" id="db_handler.insert_cve"><a class="viewcode-back" href="../../../source/cert_epsilon.lib.html#cert_epsilon.lib.db_handler.db_handler.insert_cve">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="nd">@handle_connection</span>
+    <span class="k">def</span> <span class="nf">insert_cve</span><span class="p">(</span>
+            <span class="n">cve_id</span><span class="p">,</span> 
+            <span class="n">description</span><span class="p">,</span> 
+            <span class="n">cvss</span><span class="p">,</span> 
+            <span class="n">published_date</span><span class="p">,</span> 
+            <span class="n">last_modified_date</span><span class="p">,</span> 
+            <span class="n">reference_links</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">base_score</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">exploitability_score</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">impact_score</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">cvss_access_vector</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">cvss_vector_string</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">cvss_access_complexity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">cvss_authentication</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">cvss_confidentiality_impact</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">cvss_integrity_impact</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">cvss_availability_impact</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">cursor</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Inserts CVE in database</span>
+
+<span class="sd">        :param cve_id</span>
+<span class="sd">        :param description</span>
+<span class="sd">        :param cvss</span>
+<span class="sd">        :param published_date</span>
+<span class="sd">        :param last_modified_date</span>
+<span class="sd">        :param reference_links, optional</span>
+<span class="sd">        :param base_score, optional</span>
+<span class="sd">        :param exploitability_score, optional</span>
+<span class="sd">        :param impact_score, optional</span>
+<span class="sd">        :param severity, optional</span>
+<span class="sd">        :param cvss_access_vector, optional</span>
+<span class="sd">        :param cvss_vector_string, optional</span>
+<span class="sd">        :param cvss_access_complexity, optional</span>
+<span class="sd">        :param cvss_authentication, optional</span>
+<span class="sd">        :param cvss_confidentiality_impact, optional</span>
+<span class="sd">        :param cvss_integrity_impact, optional</span>
+<span class="sd">        :param cvss_availability_impact, optional</span>
+<span class="sd">        :return: True or False if inserted</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :Author: Karlo Kegljevic &lt;kkegljev@carnet.hr&gt;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">callproc</span><span class="p">(</span><span class="s1">&#39;insert_cve&#39;</span><span class="p">,</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;cve_id&quot;</span><span class="p">:</span> <span class="n">cve_id</span><span class="p">,</span>
+                    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">description</span><span class="p">,</span>
+                    <span class="s2">&quot;cvss&quot;</span><span class="p">:</span> <span class="n">cvss</span><span class="p">,</span>
+                    <span class="s2">&quot;published_date&quot;</span><span class="p">:</span> <span class="n">published_date</span><span class="p">,</span>
+                    <span class="s2">&quot;last_modified_date&quot;</span><span class="p">:</span> <span class="n">last_modified_date</span><span class="p">,</span>
+                    <span class="s2">&quot;reference_links&quot;</span><span class="p">:</span> <span class="n">reference_links</span><span class="p">,</span>
+                    <span class="s2">&quot;base_score&quot;</span><span class="p">:</span> <span class="n">base_score</span><span class="p">,</span>
+                    <span class="s2">&quot;exploitability_score&quot;</span><span class="p">:</span> <span class="n">exploitability_score</span><span class="p">,</span>
+                    <span class="s2">&quot;impact_score&quot;</span><span class="p">:</span> <span class="n">impact_score</span><span class="p">,</span>
+                    <span class="s2">&quot;severity&quot;</span><span class="p">:</span> <span class="n">severity</span><span class="p">,</span>
+                    <span class="s2">&quot;cvss_access_vector&quot;</span><span class="p">:</span> <span class="n">cvss_access_vector</span><span class="p">,</span>
+                    <span class="s2">&quot;cvss_vector_string&quot;</span><span class="p">:</span> <span class="n">cvss_vector_string</span><span class="p">,</span>
+                    <span class="s2">&quot;cvss_access_complexity&quot;</span><span class="p">:</span> <span class="n">cvss_access_complexity</span><span class="p">,</span>
+                    <span class="s2">&quot;cvss_authentication&quot;</span><span class="p">:</span> <span class="n">cvss_authentication</span><span class="p">,</span>
+                    <span class="s2">&quot;cvss_confidentiality_impact&quot;</span><span class="p">:</span> <span class="n">cvss_confidentiality_impact</span><span class="p">,</span>
+                    <span class="s2">&quot;cvss_integrity_impact&quot;</span><span class="p">:</span> <span class="n">cvss_integrity_impact</span><span class="p">,</span>
+                    <span class="s2">&quot;cvss_availability_impact&quot;</span><span class="p">:</span> <span class="n">cvss_availability_impact</span> 
+                <span class="p">})</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># get first row and first col</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="db_handler.insert_capec"><a class="viewcode-back" href="../../../source/cert_epsilon.lib.html#cert_epsilon.lib.db_handler.db_handler.insert_capec">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="nd">@handle_connection</span>
+    <span class="k">def</span> <span class="nf">insert_capec</span><span class="p">(</span><span class="n">capec_id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">prerequisites</span><span class="p">,</span> <span class="n">mitigations</span><span class="p">,</span> <span class="n">cursor</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Inserts CAPEC in database</span>
+
+<span class="sd">        :param capec_id</span>
+<span class="sd">        :param name</span>
+<span class="sd">        :param description</span>
+<span class="sd">        :param prerequisites</span>
+<span class="sd">        :param mitigations</span>
+<span class="sd">        :return: True or False if inserted</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :Author: Karlo Kegljevic &lt;kkegljev@carnet.hr&gt;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">callproc</span><span class="p">(</span><span class="s1">&#39;insert_capec&#39;</span><span class="p">,</span> 
+                <span class="p">[</span><span class="n">capec_id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">prerequisites</span><span class="p">,</span> <span class="n">mitigations</span><span class="p">])</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># get first row and first col</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="db_handler.insert_cwe"><a class="viewcode-back" href="../../../source/cert_epsilon.lib.html#cert_epsilon.lib.db_handler.db_handler.insert_cwe">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="nd">@handle_connection</span>
+    <span class="k">def</span> <span class="nf">insert_cwe</span><span class="p">(</span><span class="n">cwe_id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">cursor</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Inserts CWE in database</span>
+
+<span class="sd">        :param cwe_id </span>
+<span class="sd">        :param name</span>
+<span class="sd">        :param description</span>
+<span class="sd">        :return: True or False if inserted</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :Author: Karlo Kegljevic &lt;kkegljev@carnet.hr&gt;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">callproc</span><span class="p">(</span><span class="s1">&#39;insert_cwe&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">cwe_id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,])</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span></div>
+    
+<div class="viewcode-block" id="db_handler.insert_xref_cwe_capec"><a class="viewcode-back" href="../../../source/cert_epsilon.lib.html#cert_epsilon.lib.db_handler.db_handler.insert_xref_cwe_capec">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="nd">@handle_connection</span>
+    <span class="k">def</span> <span class="nf">insert_xref_cwe_capec</span><span class="p">(</span><span class="n">cwe_id</span><span class="p">,</span> <span class="n">capec_id</span><span class="p">,</span> <span class="n">cursor</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Inserts cwe and capec id in xref_cwe_capec table</span>
+
+<span class="sd">        :param cwe_id</span>
+<span class="sd">        :param capec_id</span>
+<span class="sd">        :return True or False if inserted</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :Author: Karlo Kegljevic &lt;kkegljev@carnet.hr&gt;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">callproc</span><span class="p">(</span><span class="s1">&#39;insert_cwe_capec&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">cwe_id</span><span class="p">,</span> <span class="n">capec_id</span><span class="p">,])</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span></div></div>
+       
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;db_handler is used only as a module&quot;</span><span class="p">)</span>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">CERT Epsilon</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../cert_epsilon.html">cert_epsilon</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, National CERT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

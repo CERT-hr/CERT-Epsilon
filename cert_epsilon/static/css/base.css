@@ -1,0 +1,402 @@
+@font-face {
+  font-family: 'Camber';
+  src: url('../fonts/camber/Emtype Foundry - Camber Regular Regular.otf') format("opentype"); }
+
+  #capec-table > div > div {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 15px;
+    padding-right: 15px; }
+
+    .capec-desc-category {
+      font-size: large;
+      display: flex;
+      align-items: center; }
+
+      .capec-table-space {
+        overflow-y: auto;
+        height: 60vh; }
+
+        #filters {
+          border: solid lightblue 2px; }
+
+          th {
+            position: sticky;
+            top: 0;
+            background-color: white;
+            border-bottom: 1px solid lightgray;
+            text-align: center !important; }
+
+            th, td {
+              padding: 8px;
+              border-bottom: 1px solid #ddd; }
+
+              #cwe-details {
+                width: 80%;
+                margin-left: auto;
+                margin-right: auto;
+                padding-top: 20px;
+                padding-bottom: 20px; }
+
+                .cwe-table-space {
+                  overflow-y: auto;
+                  height: 60vh; }
+
+                  #cwe-table {
+                    width: 80%;
+                    margin-left: auto;
+                    margin-right: auto; }
+
+                    .cwe-id {
+                      width: 20%;
+                      text-align: center !important; }
+
+                      .cwe-desc {
+                        width: 80%; }
+
+                        #os-picker {
+                          overflow-y: scroll;
+                          border-style: solid;
+                          border-width: 1px;
+                          border-color: lightgray; }
+
+                          #advanced-button-container {
+                            justify-content: right;
+                            padding-right: 2%; }
+
+                            .dropdown {
+                              align: right !important; }
+                              .dropdown.language-picker {
+                                display: none; }
+
+.dropdown-menu {
+  width: 90vw !important; }
+
+  .table-space {
+    overflow-y: scroll;
+    max-height: 60vh; }
+
+    .vendor-table-space {
+      overflow-y: scroll;
+      max-height: 50vh; }
+
+      .table-header {
+        width: 100%; }
+
+        .dropdown-column {
+          display: flex;
+          justify-content: right; }
+
+          .table-entries {
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto; }
+
+            .entry {
+              padding: 10px; }
+
+              .entries-header {
+                text-align: center;
+                height: 50px; }
+
+                .entry-id {
+                  font-weight: bold;
+                  width: 10%;
+                  text-align: center; }
+
+                  .entry-cvss {
+                    width: 50px;
+                    text-align: center; }
+
+                    .entry-summary {
+                      width: 60%; }
+
+                      .entry-last-update {
+                        width: 10%;
+                        text-align: center; }
+
+                        .entry-published {
+                          width: 10%;
+                          text-align: center; }
+
+                          .content {
+                            padding-top: 0%;
+                            padding-bottom: 5%;
+                            padding-left: 5%;
+                            padding-right: 5%; }
+
+                            .subscription-tab {
+                              padding-top: 15px;
+                              padding-bottom: 10px;
+                              padding-left: 10px;
+                              padding-right: 10px;
+                              border: 1px solid lightgray;
+                              border-top: 0px;
+                              height: 60vh; }
+
+                              .fix-width {
+                                width: 100vw; }
+
+                                .cvss-radio-col {
+                                  display: flex !important;
+                                  align-items: center !important; }
+
+                                  .intensity-4 {
+                                    background-color: #ffb0b0; }
+
+                                    .intensity-3 {
+                                      background-color: #ffcab0; }
+
+                                      .intensity-2 {
+                                        background-color: #ffe1b0; }
+
+                                        .intensity-1 {
+                                          background-color: #ffefb0; }
+
+                                          #pagination-div {
+                                            display: flex;
+                                            padding-top: 5px;
+                                            justify-content: center;
+                                            align-items: center; }
+
+                                            .width100 {
+                                              width: 100%; }
+
+                                              .width60 {
+                                                width: 60%; }
+
+                                                #unsub-subs-area {
+                                                  height: 53vh; }
+
+                                                  .padding-top {
+                                                    padding-top: 10px; }
+
+                                                    .carnet-blue {
+                                                      background-color: #d7e3f5; }
+
+                                                      .carnet-dark-blue {
+                                                        background-color: #b4c5de; }
+
+                                                        .center-div-items {
+                                                          display: flex;
+                                                          align-items: center;
+                                                          justify-content: center; }
+
+                                                          .ui-autocomplete {
+                                                            z-index: 9999 !important; }
+
+                                                            .right-div-items {
+                                                              display: flex;
+                                                              align-items: right;
+                                                              justify-content: right; }
+
+                                                              .left-div-items {
+                                                                display: flex;
+                                                                align-items: left;
+                                                                justify-content: left; }
+
+                                                                .pad-button-right {
+                                                                  padding-right: 50px; }
+
+                                                                  #unsub-button-area {
+                                                                    padding-bottom: 20px;
+                                                                    font-size: 19px; }
+
+                                                                    .round-corners {
+                                                                      border-radius: 25px; }
+
+                                                                      .round-corners-bottom {
+                                                                        border-bottom-left-radius: 15px;
+                                                                        border-bottom-right-radius: 15px; }
+
+                                                                        .centered-title {
+                                                                          display: flex;
+                                                                          justify-content: center; }
+
+                                                                          .found-vendors-table {
+                                                                            width: 100%; }
+
+                                                                            .scrollable {
+                                                                              overflow-y: auto;
+                                                                              height: 35vh; }
+
+                                                                              .padding20 {
+                                                                                padding-right: 20px;
+                                                                                padding-left: 20px;
+                                                                                padding-top: 20px;
+                                                                                padding-bottom: 20px; }
+
+                                                                                .padding10 {
+                                                                                  padding-right: 10px;
+                                                                                  padding-left: 10px;
+                                                                                  padding-top: 10px;
+                                                                                  padding-bottom: 10px; }
+
+                                                                                  .center-div {
+                                                                                    text-align: center; }
+
+                                                                                    #footer {
+                                                                                      position: fixed;
+                                                                                      left: 0;
+                                                                                      bottom: 0%;
+                                                                                      height: 11%;
+                                                                                      width: 100%;
+                                                                                      z-index: 9999;
+                                                                                      background-color: white;
+                                                                                      color: white;
+                                                                                      text-align: center; }
+
+                                                                                      .navbar-logo {
+                                                                                        padding: 0%;
+                                                                                        width: 5cm; }
+
+                                                                                        .footer-logo {
+                                                                                          height: 1cm; }
+
+                                                                                          .nav-pills-links > li > a.active {
+                                                                                            background-color: lightgray !important;
+                                                                                            color: black !important; }
+                                                                                            .nav-pills-links > li > a {
+                                                                                              color: black; }
+                                                                                              .nav-pills-links > li > a:hover {
+                                                                                                color: darkgray; }
+
+.selected_value {
+  border-radius: 15px;
+  padding: 2px; }
+
+  .btn-light {
+    background-color: white !important; }
+
+    .nav-link {
+      overflow: hidden; }
+
+      .base-text-title {
+        text-align: center;
+        padding-top: 2%;
+        padding-bottom: 2%; }
+
+        .base-text-text {
+          text-align: justify;
+          padding-left: 20%;
+          padding-right: 20%;
+          padding-bottom: 20%; }
+
+          .footer-link {
+            color: gray;
+            height: 20%; }
+
+            html * {
+              font-family: 'Camber' !important; }
+
+.remove-all-button {
+  display: none; }
+
+  .os-lists-wrapper {
+    padding-top: 50px; }
+
+    .os-type {
+      font-weight: bold;
+      font-size: 22px; }
+
+      input[name="cvss"] {
+        margin-right: 11px; }
+
+        .email-wrapper {
+          width: 70%; }
+
+          #submit {
+            font-size: 22px; }
+
+            html[data-path="/subscriptions"] .content {
+              max-width: 2115px;
+              width: 100%;
+              margin-right: auto;
+              margin-left: auto; }
+
+              div#error {
+                margin-top: 2px;
+                margin-left: 2px;
+                color: red; }
+
+                .chosen-regex-list-wrapper {
+                  position: relative;
+                  bottom: -83px; }
+
+                  .infobox_filter {
+                    margin-right: auto;
+                    padding: 10px;
+                    background-color: lightblue;
+                    border-radius: 30px;
+                    margin-bottom: 10px;
+                    margin-top: 12px; }
+
+                    a[href="/subscriptions"] {
+                      color: #fff !important; }
+
+                      .chosen-os-list-wrapper div {
+                        margin-bottom: 6px;
+                        padding: 6px; }
+
+                        .back-button {
+                          background: #d3d9df; }
+
+                          .os-type {
+                            padding-left: 6px; }
+
+                            #eu-logo {
+                              width: 9cm; }
+
+                              .search-wrapper {
+                                padding-top: 42px; }
+
+                                .chosen-advanced-list-wrapper {
+                                  position: relative;
+                                  top: 175px; }
+
+                                  .chosen-wrapper {
+                                    height: 63.5vh !important; }
+
+                                    .buttons {
+                                      margin-left: 15px;
+                                      margin-bottom: 15px;
+                                      width: 15%; }
+
+                                      .add-new-button {
+                                        display: block;
+                                        margin-bottom: 22px;
+                                        font-size: 21px;
+                                        border-radius: 30px; }
+
+                                        .view-existed-list-button {
+                                          display: block;
+                                          margin-bottom: 22px; }
+
+                                          .unsubscribe-existed-list-button {
+                                            display: block; }
+
+                                            #accept-action, button[data-toggle="fieldset-add-row"] {
+                                              width: 30px;
+                                              background-color: #007bff;
+                                              padding-top: 5px;
+                                              padding-left: 10px;
+                                              font-size: 20px; }
+
+                                              button[data-toggle="fieldset-add-row"] {
+                                                color: white;
+                                                border: none !important;
+                                                border: none !important; }
+
+                                                #number_of_pages {
+                                                  background-color: #007bff !important;
+                                                  padding-top: 0px;
+                                                  padding-left: 9px;
+                                                  font-size: 20px;
+                                                  color: #fff; }
+
+                                                  .record-per-page-title {
+                                                    padding-top: 8px;
+                                                    padding-right: 13px; }
+
+                                                    html[data-path="/vendors"] .record-per-page-title {
+                                                      padding-top: 0px; }

@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% block title %}{{_('browse')}}{% endblock %}
+
+{% block content %}
+<div class="row padding20">
+  <div class="col-3">
+    <div class="row">
+      <div class="col-12">
+        <div class="row center-div-items padding10">
+          <h4>{{_('top 10 of all time')}}</h4>
+        </div>
+        <div class="row padding10 top10-table-space center-div-items">
+          <table class="vendors-table center-div-items">
+            <tr>
+              <th>{{_('vendor')}}</th>
+              <th>{{_('number of vulnerabilities')}}</th>
+            </tr>
+            {% for v in top_all_vendors %}
+            <tr>
+              <td><a href="/?vendor={{v['name']}}"> {{ v['name'] }}</a></td>
+              <td>{{ v['vulns'] }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-3">
+    <div class="row">
+      <div class="col-12">
+        <div class="row center-div-items padding10">
+          <h4>{{_('top 10 this week')}}</h4>
+        </div>
+        <div class="row padding10 top10-table-space center-div-items">
+          <table class="vendors-table center-div-items">
+            <tr>
+              <th>{{_('vendor')}}</th>
+              <th>{{_('number of vulnerabilities')}}</th>
+            </tr>
+            {% for v in top_weekly_vendors %}
+            <tr>
+		    <td><a href="/?vendor={{v['name']}}&date_mode=from&date_start={{ last_weeks_date }}"> {{ v['name'] }}</a></td>
+              <td>{{ v['vulns'] }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="found-vendors-box" class="col-6 carnet-blue round-corners padding20">
+    <div id="search-vendors-title" class="row center-div-items padding20">
+      <h4>{{_('search vendors')}}</h4>
+    </div>
+    <!-- svi vendori -->
+    <div id="all-vendors-container" class="all-vendors-show">
+      <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6">
+          <form id="search_form" action="/vendors" method="GET">
+            <div class="input-group mb-3">
+              <div class="ui-widget">
+                <input id="vendor_autocomplete" name="q" type="text" class="form-control" placeholder="" aria-label=""
+                  aria-describedby="button-addon2">
+              </div>
+              <div class="input-group-append">
+                <button class="btn btn-secondary" type="submit" id="button-addon2">{{_('search')}}</button>
+              </div>
+            </div>
+        </div>
+        <div class="col-3"></div>
+      </div>
+      {% if vendors %}
+        <div class="row">
+          <div class="col-1"></div>
+          <div class="col-10">
+            <div class="vendor-table-space center-div-items vendor-table-space">
+              <table class="found-vendors-table center-div-items">
+                <tr>
+                  <th>{{_('vendor')}}</th>
+                  <th>{{_('number of vulnerabilities')}}</th>
+                </tr>
+                {% for v in vendors %}
+                <tr>
+                  <td><a href="/?vendor={{v['name']}}"> {{ v['name'] }}</a></td>
+                  <td>{{ v['vulns'] }}</td>
+                </tr>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+          <div class="col-1"></div>
+        </div>
+      </div>
+
+      <!-- paginacija -->
+      <div class="row padding10"></div>
+      <div class="row">
+        <div class="col-6 center-div-items">
+          <div class="row">
+            <div class="col-1"></div>
+            <div class="col-10">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">{{_('page')}}</span>
+                </div>
+                <input id="per_page_input" type="text" class="form-control">
+                <div class="input-group-append">
+                  <span id="number_of_pages" class="btn btn-light input-group-text">/{{ n_of_pages }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-1"></div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="row center-div-items">
+            <span class="record-per-page-title">{{_('records per page')}}:</span>
+            <select id="pagination_select" onchange="handle_per_page(this.value)">
+              {% if  per_page == 10 %}
+                <option selected>10</option>
+              {% else %}
+                <option>10</option>
+              {% endif %}
+              {% if  per_page == 20 %}
+                <option selected >20</option>
+              {% else %}
+                <option>20</option>
+              {% endif %}
+              {% if  per_page == 40 %}
+                <option selected>40</option>
+              {% else %}
+                <option>40</option>
+              {% endif %}
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row center-div-items">
+        {{ pagination.links }}
+      </div>
+    {% else %}
+      <h5 class="center-div-items">{{_('Didnt find any vendors')}}</h5>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+

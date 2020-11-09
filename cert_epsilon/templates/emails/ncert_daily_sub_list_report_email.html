@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="Content-Type" content="text/html">
+    <title>NCERT - obavijesti o ranjivostima</title>
+    
+  </head>
+  <body>
+
+{% block body %}
+Poštovani, <br>
+
+<p> U nastavku Vam prenosimo nove sigurnosne preporuke i upozorenja na koje ste se preplatili putem našeg automatiziranog sustava za distribuciju.</p>
+
+
+--------------------------------------------------------------------------------<br>
+{% for cve in data.cves %}
+
+Proizvođač(i): {{cve["vendor"]|replace("['","")|replace("']"," ")|replace("'","")|replace("]"," ")|replace("["," ")}}<br>
+Proizvod(i): {{cve["product"]|replace("['","")|replace("']"," ")|replace("'","")}}<br>
+<br>
+
+{{cve["description"]|forceescape|replace("['"," ")|replace("']"," ")|replace("[\""," ")|replace("\"]"," ")}}<br>
+CVSS: {{cve["cvss"]|replace("['"," ")|replace("']"," ")|replace("]"," ")|replace("["," ")}}<br>
+<br>
+Dodatne informacije: <a href="{{host}}/cve/{{cve["cve_id"]}}">{{cve["cve_id"]}}</a><br>
+--------------------------------------------------------------------------------<br>
+{% endfor %}
+{% endblock %}
+<br>
+S poštovanjem,<br>
+-- <br>
+HR-CERT - Odjel za Nacionalni CERT<br>
+Hrvatska akademska i istraživačka mreža - CARNET<br>
+Josipa Marohnića 5, 10000 Zagreb<br>
+tel: +385 1 6661 650, fax: +385 1 6661 767<br>
+www.cert.hr<br>
+
+  </body>
+</html>
